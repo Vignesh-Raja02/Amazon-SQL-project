@@ -52,7 +52,13 @@ GROUP BY category
 
 3. Identify the top 5 products that have generated the highest revenue.
 ```sql
-
+SELECT 
+	product_id,
+	ROUND(SUM(sale)::NUMERIC,2) AS total_revenue
+FROM orders
+GROUP BY product_id
+ORDER BY SUM(sale) DESC
+LIMIT 5
 ```
 
 4. Determine the top 5 products whose revenue has decreased compared to the previous year.
