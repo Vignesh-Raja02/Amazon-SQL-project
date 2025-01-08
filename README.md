@@ -147,7 +147,19 @@ AS
 
 9. Calculate the percentage contribution of each sub-category.
 ```sql
-
+WITH sub_category_sale
+AS 
+(	 SELECT 
+		SUM(sale) AS total_sale
+	FROM orders
+)
+ 	SELECT 
+	 	o.sub_category,
+		SUM(o.sale) AS total_sale,
+		(SUM(o.sale)/s.total_sale)*100 AS percentage_contribution	
+	FROM orders AS o
+	JOIN sub_category_sale AS s ON 1=1
+	GROUP BY o.sub_category, s.total_sale
 ```
 
 10. Identify the top 2 categories that have received maximum returns and their return
