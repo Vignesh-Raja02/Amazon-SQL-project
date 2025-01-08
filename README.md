@@ -107,7 +107,12 @@ ORDER BY profit DESC
 
 6. Find out the states with the highest total orders.
 ```sql
-
+SELECT 
+	state,
+	COUNT(order_id) AS total_orders
+FROM orders
+GROUP BY state
+ORDER BY total_orders DESC
 ```
 
 7. Determine the month with the highest number of orders.
