@@ -128,6 +128,21 @@ ORDER BY total_orders DESC
 8. Calculate the profit margin percentage for each sale (Profit divided by Sales).
 ```sql
 
+WITH profit 
+AS
+(	SELECT 
+		o.order_id,
+		ROUND(SUM(o.sale -(o.quantity*p.cogs))::NUMERIC,2) AS profit
+	FROM orders AS o
+	JOIN products AS p ON p.product_id = o.product_id 
+	GROUP BY o.order_id
+)
+
+	SELECT 
+		o.order_id,
+	 	ROUND(((p.profit/o.sale)*100)::NUMERIC,2) AS profit_margin_percentage
+	FROM orders AS o
+	JOIN profit AS p ON o.order_id=p.order_id
 ```
 
 9. Calculate the percentage contribution of each sub-category.
