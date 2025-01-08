@@ -30,7 +30,14 @@ analysis techniques:
 
 1. Find out the top 5 customers who made the highest profits.
 ```sql
-– paste your code here
+SELECT 
+	o.customer_id,
+	ROUND(SUM(o.sale -(o.quantity*p.cogs))::NUMERIC,2) AS profit
+FROM orders AS o
+JOIN products AS p ON p.product_id = o.product_id 
+GROUP BY o.customer_id
+ORDER BY SUM(o.sale -(o.quantity*p.cogs)) DESC
+LIMIT 5
 ```
 
 2. Find out the average quantity ordered per category.
