@@ -40,9 +40,14 @@ ORDER BY SUM(o.sale -(o.quantity*p.cogs)) DESC
 LIMIT 5
 ```
 
-2. Find out the average quantity ordered per category.
+2. Find out the total quantity ordered per category.
 ```sql
 
+SELECT 
+	category,
+	SUM(quantity) AS total_quantity
+FROM orders
+GROUP BY category
 ```
 
 3. Identify the top 5 products that have generated the highest revenue.
