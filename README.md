@@ -64,6 +64,34 @@ LIMIT 5
 4. Determine the top 5 products whose revenue has decreased compared to the previous year.
 ```sql
 
+WITH current_year 
+AS 
+(	SELECT 
+		product_id,
+		ROUND(SUM(sale)::NUMERIC,2) AS total_revenue
+	FROM orders
+	WHERE order_date BETWEEN '2024-01-01' AND '2024-12-31'   --CURRENT_DATE - INTERVAL '365days'
+	GROUP BY product_id
+),
+Previous_year 
+AS
+(	SELECT 
+		product_id,
+		ROUND(SUM(sale)::NUMERIC,2) AS total_revenue
+	FROM orders
+	WHERE order_date BETWEEN '2023-01-01' AND '2023-12-31'  
+	GROUP BY product_id
+)
+		SELECT 
+			p.product_id,
+			p.total_revenue AS previousyear_revenue,
+			c.total_revenue AS currentyear_revenuue,
+			((c.total_revenue-p.total_revenue)/p.total_revenue)*100 AS comparison_percentage
+		FROM previous_year AS p
+		JOIN current_year AS c
+		ON p.product_id = c.product_id
+		ORDER BY comparison_percentage ASC 
+		LIMIT 5
 ```
 
 5. Identify the highest profitable sub-category.
