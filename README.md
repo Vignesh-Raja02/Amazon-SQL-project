@@ -96,7 +96,13 @@ AS
 
 5. Identify the highest profitable sub-category.
 ```sql
-
+SELECT 
+	o.sub_category,
+	ROUND(SUM(o.sale -(o.quantity*p.cogs))::NUMERIC,2) AS profit
+FROM orders AS o
+JOIN products AS p ON p.product_id = o.product_id 
+GROUP BY o.sub_category
+ORDER BY profit DESC
 ```
 
 6. Find out the states with the highest total orders.
