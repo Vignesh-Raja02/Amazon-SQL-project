@@ -162,10 +162,35 @@ AS
 	GROUP BY o.sub_category, s.total_sale
 ```
 
-10. Identify the top 2 categories that have received maximum returns and their return
+10. Identify the top 2 sub categories that have received maximum returns and their return
 percentage.
 ```sql
 
+WITH returnst
+AS 
+(	SELECT
+		o.sub_category,
+		COUNT(r.order_id) AS total_returns
+	FROM orders AS o
+	JOIN returns AS r ON o.order_id=r.order_id
+	GROUP BY o.sub_category
+),
+orders 
+AS
+(	SELECT 
+		sub_category,
+		COUNT(order_id) AS total_orders
+	FROM orders 
+	GROUP BY sub_category
+)
+ 		SELECT 
+		   	r.sub_category,
+			(r.total_returns/o.total_orders)*100 AS percentage
+		FROM orders AS o
+		JOIN returnst AS r
+		ON r.sub_category=o.sub_category
+		ORDER BY percentage DESC
+		LIMIT 2
 ```
 
 ## Entity-Relationship Diagram (ERD)
